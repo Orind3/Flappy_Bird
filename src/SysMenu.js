@@ -1,4 +1,4 @@
-var SysMenu =cc.Layer.extend({
+var SysMenu = cc.Layer.extend({
     ctor:function () {
         this._super();
         this.init();
@@ -28,7 +28,6 @@ var SysMenu =cc.Layer.extend({
 });
 
 SysMenu.scene = function () {
-    console.log("Reaching here");
     var scene = new cc.Scene();
     var layer = new SysMenu();
     scene.addChild(layer);
