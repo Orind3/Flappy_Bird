@@ -20,4 +20,6 @@ FlippyBird.CONTAINER = {
     HITS:[],
     BACKSKYS:[],
     BACKTILEMAPS:[],
+    BACKGROUND:[],
+    PIPES:[],
 }
