@@ -13,6 +13,7 @@
         "src/config/GameConfig.js",
         "src/GameLayer.js",
         "src/SysMenu.js",
-        "src/Background.js"
+        "src/Background.js",
+        "src/Bird.js"
     ]
 }

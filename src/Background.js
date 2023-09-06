@@ -2,16 +2,13 @@ var BackSky = cc.Sprite.extend({
     active: true,
     ctor: function () {
         this._super(res.bgImage);
-        var rect = cc.rect(0, 1, this.width, this.height-2);
-        this.setTextureRect(rect);
+        this.scale = 2.5;
         this.anchorX = 0;
         this.anchorY = 0;
-        this.scale = 2.5;
+        var rect = cc.rect(0, 1, this.width, this.height-2);
+        this.setTextureRect(rect);
     },
-    destroy: function () {
-        this.visible = false;
-        this.active = false;
-    }
+
 });
 
 BackSky.create = function () {
@@ -37,7 +34,7 @@ BackSky.getOrCreate = function () {
 
 BackSky.preSet = function () {
     var background = null;
-    for (var i = 0; i < 2; i++) {
+    for (var j = 0; j < 2; j++) {
         background = BackSky.create();
         background.visible = false;
         background.active = false;
