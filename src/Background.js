@@ -1,5 +1,6 @@
 var BackSky = cc.Sprite.extend({
     active: true,
+    zOrder: 11,
     ctor: function () {
         this._super(res.bgImage);
         this.scale = 2.5;
@@ -8,7 +9,10 @@ var BackSky = cc.Sprite.extend({
         var rect = cc.rect(0, 1, this.width, this.height-2);
         this.setTextureRect(rect);
     },
-
+    destroy:function () {
+        this.visible = false;
+        this.active = false;
+    }
 });
 
 BackSky.create = function () {
