@@ -11,6 +11,7 @@ var GameLayer = cc.Layer.extend({
     _backSkyRe:null,
     _state: STATE_PAUSE,
     _bird: null,
+    _pipes: null,
     _firstTouch: true,
     _backGround: null,
     _backGroundWidth: 0,
@@ -27,14 +28,19 @@ var GameLayer = cc.Layer.extend({
         BackSky.preSet();
         Ground.preSet();
         Pipe.preSet();
+
         winSize = cc.director.getWinSize();
 
+        setInterval(()=>{
+            Pipe.getOrCreate();
+        },2000);
 
         this._bird = new Bird();
         this.addChild(this._bird,this._bird.zOrder);
         this.initBackGround();
         this.addTouchListener();
         this.scheduleUpdate();
+
     },
 
     update:function (dt) {
@@ -43,6 +49,8 @@ var GameLayer = cc.Layer.extend({
             this._movingBackground(dt);
             this._movingGround(dt);
         }
+
+
     },
 
     initBackGround: function(){
@@ -53,7 +61,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     _movingGround:function (dt){
-        var movingDist = 100 * dt;
+        var movingDist = 200 * dt;
 
         var currPosX = this._backGround.x - movingDist;
 
@@ -118,10 +126,10 @@ var GameLayer = cc.Layer.extend({
                 if(self._firstTouch){
                     self._state = STATE_PLAYING;
                     self._firstTouch = false;
-                    console.log("Get ready");
                     self._bird.getReady();
                 }
-                self._bird.fly();
+                if(self._state === STATE_PLAYING)
+                    self._bird.fly();
                 return true;
             },
             onTouchEnded: function(touch, event) {

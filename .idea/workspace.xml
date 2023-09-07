@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4d55f2b-12a8-484d-a811-f49e89a3e91c" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Ground.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Pipe.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.json" beforeDir="false" afterPath="$PROJECT_DIR$/project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Background.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Background.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Bird.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bird.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameLayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameLayer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resource.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/GameConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/GameConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ground.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ground.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Pipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pipe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SysMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SysMenu.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +36,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AirCraft" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
@@ -51,17 +48,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Unnamed" type="#org.ccdt.lua.launch.CocosJSConfigurationType" factoryName="JSBinding">
       <first key="runtime_arguments" stringValue="" />
       <first key="force_update_entry_file" booleanValue="true" />
@@ -95,7 +81,14 @@
       <workItem from="1693883653912" duration="3980000" />
       <workItem from="1693887860321" duration="6907000" />
       <workItem from="1693909093888" duration="1967000" />
-      <workItem from="1693964484464" duration="18809000" />
+      <workItem from="1693964484464" duration="19356000" />
+      <workItem from="1694051351110" duration="5742000" />
+      <workItem from="1694057452616" duration="6801000" />
+      <workItem from="1694068634025" duration="29000" />
+      <workItem from="1694068836839" duration="5960000" />
+      <workItem from="1694075456203" duration="324000" />
+      <workItem from="1694076111647" duration="2259000" />
+      <workItem from="1694078806136" duration="2218000" />
     </task>
     <servers />
   </component>
@@ -113,5 +106,12 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="#org.ccdt.lua.launch.CocosJSConfigurationType">
+        <watch expression="FlippyBird.CONTAINER.PIPES[i]._boundingBox" language="JavaScript" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

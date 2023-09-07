@@ -1,6 +1,7 @@
 var Ground = cc.Sprite.extend({
     active: true,
-    zOrder: 11,
+    zOrder: 12,
+    _boundingBox: null,
     ctor: function () {
         this._super(res.groundImage);
         this.scale = 2.5;
@@ -8,15 +9,19 @@ var Ground = cc.Sprite.extend({
         this.anchorY = 0;
         this.x = 0;
         this.y = 0;
+        this.scheduleUpdate();
     },
     destroy:function () {
         this.visible = false;
         this.active = false;
+    },
+    update: function (dt){
+        this._boundingBox = this.getBoundingBox();
     }
 });
 Ground.create = function () {
     var backGround = new Ground();
-    g_sharedGameLayer.addChild(backGround,-10);
+    g_sharedGameLayer.addChild(backGround,12);
     FlippyBird.CONTAINER.BACKGROUND.push(backGround);
     return backGround;
 };

@@ -22,7 +22,6 @@ var SysMenu = cc.Layer.extend({
             cc.director.runScene(new cc.TransitionFade(1.2, scene));
         })
         this.addChild(playButton);
-
         return true;
     },
 });
