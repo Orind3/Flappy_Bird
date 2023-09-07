@@ -1,6 +1,6 @@
 const MIN_PIPE_HEIGHT = 100;
 const MAX_PIPE_HEIGHT = 350;
-const STARTING_X = 2000;
+const STARTING_X = 1500;
 
 var Pipe = cc.Sprite.extend({
     active: true,
@@ -23,6 +23,7 @@ var Pipe = cc.Sprite.extend({
             scale: this._scale,
             anchorX: 0.5,
             anchorY: 0,
+            interactablePipe: true,
             x: STARTING_X,
             zOrder: this.zOrder,
         });
@@ -30,6 +31,7 @@ var Pipe = cc.Sprite.extend({
             scale: this._scale,
             anchorX: 0.5,
             anchorY: 0,
+            interactablePipe: true,
             x: STARTING_X,
             zOrder: this.zOrder,
             rotation: 180,
@@ -74,6 +76,24 @@ var Pipe = cc.Sprite.extend({
         this._topBoundingBox = this.topPipe.getBoundingBox();
         this._downBoundingBox = this.downPipe.getBoundingBox();
 
+    },
+    beMove: function (hitPoint, pipe){
+        var midPipeY;
+        var selfPipe;
+        if(pipe == "TOP"){
+            midPipeY = this.topPipe.y - this.topPipe.height * this._scale / 2;
+            selfPipe = this.topPipe;
+            selfPipe.interactablePipe = false;
+        }
+        else{
+            midPipeY = this.downPipe.y + this.downPipe.height * this._scale / 2;
+            selfPipe = this.downPipe;
+            selfPipe.interactablePipe = false;
+        }
+        const delta = hitPoint.y - midPipeY;
+        console.log(delta);
+        selfPipe.runAction(cc.rotateTo(1,delta));
+        selfPipe.runAction(cc.moveTo(1,cc.p(this.x + 1000,-800)));
     }
 });
 

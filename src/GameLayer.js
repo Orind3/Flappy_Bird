@@ -39,6 +39,7 @@ var GameLayer = cc.Layer.extend({
         this.addChild(this._bird,this._bird.zOrder);
         this.initBackGround();
         this.addTouchListener();
+        this.addKeyboardListener();
         this.scheduleUpdate();
 
     },
@@ -56,13 +57,12 @@ var GameLayer = cc.Layer.extend({
     initBackGround: function(){
         this._backSky = BackSky.getOrCreate();
         this._backGround = Ground.getOrCreate();
-        this._backSkyWidth = this._backSky.width;
+        this._backSkyWidth = this._backSky.width * 2.5;
         this._backGroundWidth = this._backGround.width;
     },
 
     _movingGround:function (dt){
         var movingDist = 200 * dt;
-
         var currPosX = this._backGround.x - movingDist;
 
         if(currPosX + this._backGroundWidth <= winSize.width){
@@ -93,8 +93,6 @@ var GameLayer = cc.Layer.extend({
         var locBackSkyRe = this._backSkyRe;
 
         if(locSkyWidth + currPosX <= winSize.width){
-;
-
             locBackSkyRe = this._backSky;
             this._backSkyRe = this._backSky;
 
@@ -136,12 +134,24 @@ var GameLayer = cc.Layer.extend({
                 //Do nothing
             }
         },this);
+    },
+    addKeyboardListener: function (){
+        var self = this;
+        if(cc.sys.capabilities.hasOwnProperty('keyboard'))
+            cc.eventManager.addListener({
+                event: cc.EventListener.KEYBOARD,
+                onKeyPressed: function (key, event){
+                    if(key == cc.KEY.q && self._bird.powerSkill){
+                        self._bird.usePowerSkill();
+                    }
+                }
+            },this);
     }
 });
 
-    GameLayer.scene = function () {
-        var scene = new cc.Scene();
-        var layer = new GameLayer();
-        scene.addChild(layer, 1);
-        return scene;
-    };
+GameLayer.scene = function () {
+    var scene = new cc.Scene();
+    var layer = new GameLayer();
+    scene.addChild(layer, 1);
+    return scene;
+};
