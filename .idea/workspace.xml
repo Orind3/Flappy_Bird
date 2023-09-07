@@ -2,12 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4d55f2b-12a8-484d-a811-f49e89a3e91c" name="Default" comment="">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/src/Ground.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Pipe.js" afterDir="false" />
+>>>>>>> befa5d41209f9fc1e331367ac3ed689e0c2fa49d
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Bird.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bird.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameLayer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameLayer.js" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/Ground.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ground.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Pipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Pipe.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SysMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/SysMenu.js" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/Resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resource.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/GameConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/GameConfig.js" afterDir="false" />
+>>>>>>> f2c1a648cdbfdc144e8ad19fa8d8ead61583ad7a
+>>>>>>> befa5d41209f9fc1e331367ac3ed689e0c2fa49d
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +69,7 @@
       <first key="disable_using_upload" booleanValue="false" />
       <first key="argument_map">
         <second key="macruntime" stringValue="" />
-        <second key="win32runtime" stringValue="D:\MiniGame\simulator\win32\DemoGame.exe" />
+        <second key="win32runtime" stringValue="E:\Project\Flappy_Bird\simulator\win32\DemoGame.exe" />
         <second key="connector_id" stringValue="jsbinding.win32.attach.connector" />
         <second key="remotePlatform" stringValue="Android" />
         <second key="host" stringValue="127.0.0.1" />
@@ -80,7 +94,14 @@
       <workItem from="1693880172473" duration="3255000" />
       <workItem from="1693883653912" duration="3980000" />
       <workItem from="1693887860321" duration="6907000" />
+<<<<<<< HEAD
+      <workItem from="1693909093888" duration="1323000" />
+      <workItem from="1694008861174" duration="25000" />
+      <workItem from="1694008900309" duration="28000" />
+      <workItem from="1694008940135" duration="83000" />
+=======
       <workItem from="1693909093888" duration="1967000" />
+<<<<<<< HEAD
       <workItem from="1693964484464" duration="19356000" />
       <workItem from="1694051351110" duration="5742000" />
       <workItem from="1694057452616" duration="6801000" />
@@ -89,6 +110,10 @@
       <workItem from="1694075456203" duration="324000" />
       <workItem from="1694076111647" duration="2259000" />
       <workItem from="1694078806136" duration="2218000" />
+=======
+      <workItem from="1693964484464" duration="18809000" />
+>>>>>>> f2c1a648cdbfdc144e8ad19fa8d8ead61583ad7a
+>>>>>>> befa5d41209f9fc1e331367ac3ed689e0c2fa49d
     </task>
     <servers />
   </component>
