@@ -22,4 +22,6 @@ FlippyBird.CONTAINER = {
     BACKTILEMAPS:[],
     BACKGROUND:[],
     PIPES:[],
-}
+};
+
+var GAMESCORE = 0;

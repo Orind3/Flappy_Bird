@@ -1,21 +1,21 @@
-
 STATE_PLAYING = 0;
 STATE_PAUSE = 2;
 STATE_GAMEOVER = 1;
 
-var g_sharedGameLayer;
-
-var GameLayer = cc.Layer.extend({
+let g_sharedGameLayer;
+const GameLayer = cc.Layer.extend({
     _backSky:null,
     _backSkyWidth: 0,
     _backSkyRe:null,
     _state: STATE_PAUSE,
+    scoreTitle: null,
     _bird: null,
     _pipes: null,
     _firstTouch: true,
     _backGround: null,
     _backGroundWidth: 0,
     _preBackGround: null,
+    pipeCreateId: 0,
 
 
     ctor:function () {
@@ -24,16 +24,17 @@ var GameLayer = cc.Layer.extend({
     },
     init:function () {
         g_sharedGameLayer = this;
+        winSize = cc.director.getWinSize();
+
+        this.scoreTitle = new ccui.Text("Score: ",res.font,50);
+        this.scoreTitle.x = 120;
+        this.scoreTitle.y = winSize.height - 50;
+        this.addChild(this.scoreTitle);
 
         BackSky.preSet();
         Ground.preSet();
         Pipe.preSet();
 
-        winSize = cc.director.getWinSize();
-
-        setInterval(()=>{
-            Pipe.getOrCreate();
-        },2000);
 
         this._bird = new Bird();
         this.addChild(this._bird,this._bird.zOrder);
@@ -46,12 +47,14 @@ var GameLayer = cc.Layer.extend({
 
     update:function (dt) {
         //this._testNode.update(dt);
-        if (this._state == STATE_PLAYING) {
+        if (this._state === STATE_PLAYING) {
             this._movingBackground(dt);
             this._movingGround(dt);
         }
-
-
+        this.scoreTitle.setString("Score: " + GAMESCORE);
+        if(this._state === STATE_GAMEOVER){
+            clearInterval(pipeCreateId);
+        }
     },
 
     initBackGround: function(){
@@ -122,6 +125,9 @@ var GameLayer = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: function(touch, event) {
                 if(self._firstTouch){
+                    pipeCreateId = setInterval(()=>{
+                        Pipe.getOrCreate();
+                    },2000);
                     self._state = STATE_PLAYING;
                     self._firstTouch = false;
                     self._bird.getReady();
@@ -143,6 +149,9 @@ var GameLayer = cc.Layer.extend({
                 onKeyPressed: function (key, event){
                     if(key == cc.KEY.q && self._bird.powerSkill){
                         self._bird.usePowerSkill();
+                    }
+                    if(key == cc.KEY.w && self._bird.dash){
+                        self._bird.useDash();
                     }
                 }
             },this);

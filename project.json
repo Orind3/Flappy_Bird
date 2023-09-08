@@ -12,10 +12,11 @@
         "src/Resource.js",
         "src/config/GameConfig.js",
         "src/GameLayer.js",
-        "src/SysMenu.js",
+        "src/TitleScene.js",
         "src/Background.js",
         "src/Bird.js",
         "src/Ground.js",
-        "src/Pipe.js"
+        "src/Pipe.js",
+        "src/OverScene.js"
     ]
 }

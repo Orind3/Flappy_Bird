@@ -6,7 +6,7 @@ var BackSky = cc.Sprite.extend({
         this.scale = 2.5;
         this.anchorX = 0;
         this.anchorY = 0;
-        var rect = cc.rect(0, 1, this.width, this.height-2);
+        var rect = cc.rect(0, 1, this.width, this.height - 1);
         this.setTextureRect(rect);
     },
     destroy:function () {

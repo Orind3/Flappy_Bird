@@ -1,19 +1,22 @@
 var checkFirstTime = true;
+var INIT_POSITION = cc.p(400, cc.director.getWinSize().height/2);
 
 var Bird = cc.Sprite.extend({
     zOrder:1,
-    appearPosition:cc.p(400, cc.director.getWinSize().height/2),
+    appearPosition: INIT_POSITION,
     active:true,
     birdGravity: 0,
     birdVelocity: 0,
     _width: 0,
     _height: 0,
-    birdImagePadding: 4,
+    birdImagePadding: 10,
     birdAcceleration: 0,
     birdAngle: 0,
     birdJumpVelocity: 0,
     powerSkill: true,
     powerSkillActive: false,
+    dash: true,
+    dashActive: false,
     _boundingBox: {
         topLeft: cc.p(0,0),
         downLeft: cc.p(0,0),
@@ -31,6 +34,7 @@ var Bird = cc.Sprite.extend({
         this.scale = 2.5;
         this.setWidthAndHeight(this.scale);
         this.scheduleUpdate();
+        this.getTexture().setAliasTexParameters()
     },
 
     update: function (dt){
@@ -38,6 +42,9 @@ var Bird = cc.Sprite.extend({
         this.birdVelocity -= dt * this.birdGravity;
         this.y = this.y + this.birdVelocity;
         this.calculateBoundingBox();
+        if(this.dashActive && this.x > INIT_POSITION.x){
+            this.x -= 2;
+        }
         if(g_sharedGameLayer._state == STATE_PLAYING){
             this.calculateBirdAngle(dt);
         }
@@ -48,8 +55,8 @@ var Bird = cc.Sprite.extend({
         if(resCollide){
             g_sharedGameLayer._state = STATE_GAMEOVER;
         }
-        if((g_sharedGameLayer._state == STATE_GAMEOVER && checkFirstTime) || resCollide == 2){
-            checkFirstTime = false;
+        if((g_sharedGameLayer._state === STATE_GAMEOVER && checkFirstTime) || resCollide === 2){
+            console.log("Over");
             this.birdAcceleration = 0;
             this.birdGravity = 0;
             this.birdVelocity = 0;
@@ -59,6 +66,11 @@ var Bird = cc.Sprite.extend({
                     this.calculateBirdAngle(dt);
                 },100);
             }
+            if(checkFirstTime)
+                setTimeout(()=>{
+                    cc.director.runScene(new cc.TransitionFade(0.5, OverScene.scene()));
+                },1500);
+            checkFirstTime = false;
         }
     },
     calculateBirdAngle: function (dt){
@@ -141,6 +153,16 @@ var Bird = cc.Sprite.extend({
             this.setWidthAndHeight(2.5);
             this.powerSkillActive = false;
         },5000);
+    },
+    useDash: function (){
+        this.dash = false;
+        this.dashActive = true;
+        setTimeout(()=>{
+            this.dash = true;
+        },10000)
+        var movingDist = 400;
+        var movingForward = cc.moveTo(0.2,this.x + movingDist,this.y);
+        this.runAction(movingForward);
     },
     setWidthAndHeight: function (scale){
         this._width = this.width * scale - this.birdImagePadding * scale;

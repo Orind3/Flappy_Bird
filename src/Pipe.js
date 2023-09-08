@@ -10,10 +10,12 @@ var Pipe = cc.Sprite.extend({
     downPipe: null,
     downPipePosY: 0,
     topPipePosY: 0,
+    isScored: false,
     pipesPosX: 100,
     _scale: 2,
     _topBoundingBox: null,
     _downBoundingBox: null,
+
 
     ctor: function (){
         this._super();
@@ -65,6 +67,10 @@ var Pipe = cc.Sprite.extend({
         this.downPipe.x = STARTING_X;
     },
     update:function (dt) {
+        if(g_sharedGameLayer._bird.x > this.downPipe.x && !this.isScored){
+            this.isScored = true;
+            GAMESCORE ++;
+        }
         var movingDist = 200 * dt;
         if (g_sharedGameLayer._state == STATE_PLAYING&&this.active) {
             this.topPipe.x -= movingDist;
@@ -91,7 +97,6 @@ var Pipe = cc.Sprite.extend({
             selfPipe.interactablePipe = false;
         }
         const delta = hitPoint.y - midPipeY;
-        console.log(delta);
         selfPipe.runAction(cc.rotateTo(1,delta));
         selfPipe.runAction(cc.moveTo(1,cc.p(this.x + 1000,-800)));
     }
@@ -108,7 +113,7 @@ Pipe.getOrCreate = function (){
     var selChild = null;
     for(var i = 0; i < FlippyBird.CONTAINER.PIPES.length; i++){
         selChild = FlippyBird.CONTAINER.PIPES[i];
-        if(selChild.active == false){
+        if(selChild && selChild.active == false){
             selChild.active = true;
             selChild.visible = true;
             selChild.calculateDualPipeDistance();
@@ -122,7 +127,7 @@ Pipe.getOrCreate = function (){
 
 Pipe.preSet = function (){
     var pipe = null;
-    for(var j = 0; j < 1; j++){
+    for(var j = 0; j < 5; j++){
         pipe = Pipe.create();
         pipe.visible = false;
         pipe.active = false;
