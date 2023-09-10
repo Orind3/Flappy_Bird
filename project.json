@@ -17,6 +17,7 @@
         "src/Bird.js",
         "src/Ground.js",
         "src/Pipe.js",
-        "src/OverScene.js"
+        "src/OverScene.js",
+        "src/Music.js"
     ]
 }

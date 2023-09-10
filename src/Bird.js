@@ -1,18 +1,20 @@
-var checkFirstTime = true;
-var INIT_POSITION = cc.p(400, cc.director.getWinSize().height/2);
+let checkFirstTime = true;
+const INIT_POSITION = cc.p(400, cc.director.getWinSize().height/2);
 
-var Bird = cc.Sprite.extend({
+const Bird = cc.Sprite.extend({
     zOrder:1,
-    appearPosition: INIT_POSITION,
     active:true,
     birdGravity: 0,
     birdVelocity: 0,
     _width: 0,
     _height: 0,
+    movingForward: null,
     birdImagePadding: 10,
     birdAcceleration: 0,
     birdAngle: 0,
     birdJumpVelocity: 0,
+    powerSkillTimeoutId: 0,
+    dashSkillTimeoutId: 0,
     powerSkill: true,
     powerSkillActive: false,
     dash: true,
@@ -29,20 +31,19 @@ var Bird = cc.Sprite.extend({
     ctor: function (){
         this._super(res.birdImage);
         this.tag = this.zOrder;
-        this.x = this.appearPosition.x;
-        this.y = this.appearPosition.y;
+        this.x = INIT_POSITION.x;
+        this.y = INIT_POSITION.y;
         this.scale = 2.5;
         this.setWidthAndHeight(this.scale);
-        this.scheduleUpdate();
-        this.getTexture().setAliasTexParameters()
+        this.getTexture().setAliasTexParameters();
     },
 
-    update: function (dt){
+    updateBird: function (dt){
         this.birdVelocity += dt * this.birdAcceleration;
         this.birdVelocity -= dt * this.birdGravity;
         this.y = this.y + this.birdVelocity;
         this.calculateBoundingBox();
-        if(this.dashActive && this.x > INIT_POSITION.x){
+        if(this.dashActive && this.x > INIT_POSITION.x && g_sharedGameLayer._state === STATE_PLAYING){
             this.x -= 2;
         }
         if(g_sharedGameLayer._state == STATE_PLAYING){
@@ -54,9 +55,10 @@ var Bird = cc.Sprite.extend({
         var resCollide = this.collide();
         if(resCollide){
             g_sharedGameLayer._state = STATE_GAMEOVER;
+            clearTimeout(this.powerSkillTimeoutId);
+            clearTimeout(this.dashSkillTimeoutId);
         }
         if((g_sharedGameLayer._state === STATE_GAMEOVER && checkFirstTime) || resCollide === 2){
-            console.log("Over");
             this.birdAcceleration = 0;
             this.birdGravity = 0;
             this.birdVelocity = 0;
@@ -66,11 +68,16 @@ var Bird = cc.Sprite.extend({
                     this.calculateBirdAngle(dt);
                 },100);
             }
-            if(checkFirstTime)
+            if(checkFirstTime){
+                playHurtEffect();
+                if(this.movingForward){
+                    this.stopAction(this.movingForward);
+                }
                 setTimeout(()=>{
                     cc.director.runScene(new cc.TransitionFade(0.5, OverScene.scene()));
                 },1500);
-            checkFirstTime = false;
+                checkFirstTime = false;
+            }
         }
     },
     calculateBirdAngle: function (dt){
@@ -86,7 +93,6 @@ var Bird = cc.Sprite.extend({
         else{
             this.birdAngle = 0;
         }
-
         this.setRotation(this.birdAngle);
         },
     getReady: function (){
@@ -96,10 +102,14 @@ var Bird = cc.Sprite.extend({
         this.birdJumpVelocity = 8;
     },
     fly: function (){
-        this.birdAcceleration = 200;
+        console.log("Flying");
+        if(g_sharedGameLayer._state !== STATE_GAMEOVER){
+            playJumpEffect();
+            this.birdAcceleration = 200;
+        }
     },
     collide: function (){
-        if(g_sharedGameLayer._state == STATE_PLAYING){
+        if(g_sharedGameLayer._state === STATE_PLAYING){
             for(var i = 0; i < FlippyBird.CONTAINER.PIPES.length; i++){
                 for (let currPoint in this._boundingBox) {
                     if(FlippyBird.CONTAINER.PIPES[i]._downBoundingBox
@@ -148,7 +158,7 @@ var Bird = cc.Sprite.extend({
         },30000);
         this.runAction(cc.scaleBy(0.2,5))
         this.setWidthAndHeight(12.5);
-        setTimeout(()=>{
+        this.powerSkillTimeoutId = setTimeout(()=>{
             this.runAction(cc.scaleBy(0.2,0.2));
             this.setWidthAndHeight(2.5);
             this.powerSkillActive = false;
@@ -161,8 +171,11 @@ var Bird = cc.Sprite.extend({
             this.dash = true;
         },10000)
         var movingDist = 400;
-        var movingForward = cc.moveTo(0.2,this.x + movingDist,this.y);
-        this.runAction(movingForward);
+        this.movingForward = cc.moveTo(0.2,this.x + movingDist,this.y);
+        this.dashSkillTimeoutId = setTimeout(()=>{
+            this.movingForward = null;
+        },200)
+        this.runAction(this.movingForward);
     },
     setWidthAndHeight: function (scale){
         this._width = this.width * scale - this.birdImagePadding * scale;

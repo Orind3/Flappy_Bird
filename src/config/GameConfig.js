@@ -17,9 +17,7 @@ FlippyBird.LEVEL = {
 FlippyBird.SCORE = 0;
 
 FlippyBird.CONTAINER = {
-    HITS:[],
     BACKSKYS:[],
-    BACKTILEMAPS:[],
     BACKGROUND:[],
     PIPES:[],
 };

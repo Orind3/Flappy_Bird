@@ -5,7 +5,11 @@ const STARTING_X = 1500;
 var Pipe = cc.Sprite.extend({
     active: true,
     zOrder: -5,
-    _distancesBetweenPipes: 300,
+    _spaceBetweenTopDownPipes: 300,
+    _distanceBetweenTwoPipes: 400,
+    _maxDeltaSpace: 100,
+    _maxDeltaDistance: 100,
+    _isCreated: true,
     topPipe: null,
     downPipe: null,
     downPipePosY: 0,
@@ -15,7 +19,7 @@ var Pipe = cc.Sprite.extend({
     _scale: 2,
     _topBoundingBox: null,
     _downBoundingBox: null,
-
+    _posToReset: -200,
 
     ctor: function (){
         this._super();
@@ -43,50 +47,59 @@ var Pipe = cc.Sprite.extend({
 
         this._topBoundingBox = this.topPipe.getBoundingBox();
         this._downBoundingBox = this.downPipe.getBoundingBox();
-        this.scheduleUpdate();
     },
     destroy:function () {
+        this._isCreated = true;
         this.visible = false;
         this.active = false;
     },
-
+    //Calculate random distance between 2 top pipe and down pipe
     calculateDualPipeDistance: function (){
         const pipeHeight = this.downPipe.height * this._scale;
-        let deltaDistances = Math.random() * pipeHeight;
-        if(deltaDistances < MIN_PIPE_HEIGHT){
-            deltaDistances = MIN_PIPE_HEIGHT;
+        let deltaHeight = Math.random() * pipeHeight;
+        if(deltaHeight < MIN_PIPE_HEIGHT){
+            deltaHeight = MIN_PIPE_HEIGHT;
         }
-        if(deltaDistances > MAX_PIPE_HEIGHT){
-            deltaDistances = MAX_PIPE_HEIGHT;
+        if(deltaHeight > MAX_PIPE_HEIGHT){
+            deltaHeight = MAX_PIPE_HEIGHT;
         }
-        this.topPipePosY = pipeHeight + this._distancesBetweenPipes + deltaDistances;
-        this.downPipePosY = deltaDistances - pipeHeight;
+        const deltaSpace = this._maxDeltaSpace * (0.5 - Math.random());
+        this.topPipePosY = pipeHeight + this._spaceBetweenTopDownPipes + deltaHeight + deltaSpace;
+        this.downPipePosY = deltaHeight - pipeHeight;
+
         this.topPipe.y = this.topPipePosY;
         this.downPipe.y = this.downPipePosY;
         this.topPipe.x = STARTING_X;
         this.downPipe.x = STARTING_X;
     },
-    update:function (dt) {
-        if(g_sharedGameLayer._bird.x > this.downPipe.x && !this.isScored){
+    updatePipe:function (dt) {
+        const movingDist = 200 * dt;
+        if (g_sharedGameLayer._bird.x > this.downPipe.x && !this.isScored){
             this.isScored = true;
+            playScoreEffect();
             GAMESCORE ++;
         }
-        var movingDist = 200 * dt;
-        if (g_sharedGameLayer._state == STATE_PLAYING&&this.active) {
+        let deltaDistance = this._maxDeltaDistance * (0.5 - Math.random());
+        if(this._isCreated && this.topPipe.x < (STARTING_X - this._distanceBetweenTwoPipes + deltaDistance)){
+            Pipe.getOrCreate();
+            this._isCreated = false;
+        }
+
+        if (g_sharedGameLayer._state === STATE_PLAYING && this.active) {
             this.topPipe.x -= movingDist;
             this.downPipe.x -= movingDist;
         }
-        if(this.downPipe < -200){
+        if(this.downPipe.x < this._posToReset){
             this.destroy();
         }
         this._topBoundingBox = this.topPipe.getBoundingBox();
         this._downBoundingBox = this.downPipe.getBoundingBox();
-
     },
+    //Locate exact top or down pipe to be moved and set action for it
     beMove: function (hitPoint, pipe){
-        var midPipeY;
-        var selfPipe;
-        if(pipe == "TOP"){
+        let midPipeY;
+        let selfPipe;
+        if(pipe === "TOP"){
             midPipeY = this.topPipe.y - this.topPipe.height * this._scale / 2;
             selfPipe = this.topPipe;
             selfPipe.interactablePipe = false;
@@ -98,36 +111,46 @@ var Pipe = cc.Sprite.extend({
         }
         const delta = hitPoint.y - midPipeY;
         selfPipe.runAction(cc.rotateTo(1,delta));
-        selfPipe.runAction(cc.moveTo(1,cc.p(this.x + 1000,-800)));
+        selfPipe.runAction(cc.moveTo(1,this.x + 1000,-800));
     }
 });
 
 Pipe.create = function (){
-    var pipe = new Pipe();
+    console.log("Pipe create()" + Math.random());
+    let pipe = new Pipe();
     g_sharedGameLayer.addChild(pipe,-5);
     FlippyBird.CONTAINER.PIPES.push(pipe);
     return pipe;
 };
-
+//If exist some pipe can be used we take that pipe
 Pipe.getOrCreate = function (){
-    var selChild = null;
-    for(var i = 0; i < FlippyBird.CONTAINER.PIPES.length; i++){
+    let selChild = null;
+    for(let i = 0; i < FlippyBird.CONTAINER.PIPES.length; i++){
         selChild = FlippyBird.CONTAINER.PIPES[i];
-        if(selChild && selChild.active == false){
-            selChild.active = true;
-            selChild.visible = true;
-            selChild.calculateDualPipeDistance();
+        if(selChild && selChild.active === false){
+            Pipe.prepare(selChild);
             return selChild;
         }
     }
     selChild = Pipe.create();
     selChild.calculateDualPipeDistance();
     return selChild;
+};
+//Using for relocation and state of pipes
+Pipe.prepare = function (pipe){
+    pipe.active = true;
+    pipe.visible = true;
+    pipe.calculateDualPipeDistance();
+    pipe.topPipe.setRotation(180);
+    pipe.downPipe.setRotation(0);
+    pipe.isScored = false;
+    pipe.topPipe.interactablePipe = true;
+    pipe.downPipe.interactablePipe = true;
 }
-
+//Pre create some pipe to improve performance
 Pipe.preSet = function (){
-    var pipe = null;
-    for(var j = 0; j < 5; j++){
+    let pipe = null;
+    for(let j = 0; j < 5; j++){
         pipe = Pipe.create();
         pipe.visible = false;
         pipe.active = false;

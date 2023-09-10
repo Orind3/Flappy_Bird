@@ -1,5 +1,5 @@
 var TitleScene = cc.Layer.extend({
-    countDown: 5,
+    countDown: 3,
     countDownTime: null,
     timingLabel: null,
     enterLabel: null,
@@ -16,12 +16,6 @@ var TitleScene = cc.Layer.extend({
         this.gameName.x = winSize.width  / 2;
         this.gameName.y = 400;
 
-        // const TestImage = cc.Sprite(res.goldenCup);
-        // TestImage.attr({
-        //     anchorX: 0,
-        //     anchorY: 0,
-        // });
-        // this.addChild(TestImage,1);
 
         const backGround = cc.Sprite(res.bgImage);
         backGround.attr({
@@ -62,7 +56,7 @@ var TitleScene = cc.Layer.extend({
 
                 onKeyPressed: function (key, event){
                     if(key == cc.KEY.enter){
-                        self.timingLabel.setString("5");
+                        self.timingLabel.setString(self.countDown);
                         self.removeChild(self.enterLabel);
                         self.removeChild(self.gameName);
 

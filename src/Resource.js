@@ -5,7 +5,14 @@ var res = {
     groundImage: "res/ground.png",
     pipeImage: "res/pipe.png",
     font: "res/fonts/flappy.ttf",
-    goldenCup: "res/goldenCup.jpg",
+    scoreEffect: "res/Music/score.wav",
+    explosionEffect: "res/Music/explosion.wav",
+    jumpEffect: "res/Music/jump.wav",
+    backgroundMusic: "res/Music/marios_way.mp3",
+    hurtEffect: "res/Music/hurt.wav",
+    bronzeCup: "res/bronzeCup.png",
+    silverCup: "res/silverCup.png",
+    goldenCup: "res/goldenCup.png",
 }
 
 var g_mainmenu = [

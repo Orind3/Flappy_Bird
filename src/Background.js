@@ -1,4 +1,4 @@
-var BackSky = cc.Sprite.extend({
+const BackSky = cc.Sprite.extend({
     active: true,
     zOrder: 11,
     ctor: function () {
@@ -6,8 +6,6 @@ var BackSky = cc.Sprite.extend({
         this.scale = 2.5;
         this.anchorX = 0;
         this.anchorY = 0;
-        var rect = cc.rect(0, 1, this.width, this.height - 1);
-        this.setTextureRect(rect);
     },
     destroy:function () {
         this.visible = false;
@@ -16,17 +14,18 @@ var BackSky = cc.Sprite.extend({
 });
 
 BackSky.create = function () {
-    var backGround = new BackSky();
+    console.log("Background create() "+ Math.random());
+    const backGround = new BackSky();
     g_sharedGameLayer.addChild(backGround,-10);
     FlippyBird.CONTAINER.BACKSKYS.push(backGround);
     return backGround;
 };
 
 BackSky.getOrCreate = function () {
-    var selChild = null;
-    for(var i = 0; i < FlippyBird.CONTAINER.BACKSKYS.length; i++){
+    let selChild = null;
+    for(let i = 0; i < FlippyBird.CONTAINER.BACKSKYS.length; i++){
         selChild = FlippyBird.CONTAINER.BACKSKYS[i];
-        if(selChild.active == false){
+        if(selChild.active === false){
             selChild.active = true;
             selChild.visible = true;
             return selChild;
@@ -37,8 +36,8 @@ BackSky.getOrCreate = function () {
 };
 
 BackSky.preSet = function () {
-    var background = null;
-    for (var j = 0; j < 2; j++) {
+    let background = null;
+    for (let j = 0; j < 2; j++) {
         background = BackSky.create();
         background.visible = false;
         background.active = false;

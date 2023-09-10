@@ -9,17 +9,18 @@ var Ground = cc.Sprite.extend({
         this.anchorY = 0;
         this.x = 0;
         this.y = 0;
-        this.scheduleUpdate();
+        this.getTexture().setAliasTexParameters();
     },
     destroy:function () {
         this.visible = false;
         this.active = false;
     },
-    update: function (dt){
+    updateGround: function (dt){
         this._boundingBox = this.getBoundingBox();
     }
 });
 Ground.create = function () {
+    console.log("Ground create() "+ Math.random());
     var backGround = new Ground();
     g_sharedGameLayer.addChild(backGround,12);
     FlippyBird.CONTAINER.BACKGROUND.push(backGround);
