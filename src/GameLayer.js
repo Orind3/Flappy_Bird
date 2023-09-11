@@ -20,6 +20,7 @@ const GameLayer = cc.Layer.extend({
     _countDownTime : 3,
     _countDownID: 0,
     winSize: null,
+    _isFirstTime: true,
 
     ctor:function () {
         this._super();
@@ -32,6 +33,7 @@ const GameLayer = cc.Layer.extend({
         this._scoreTitle = new ccui.Text("Score: ",res.font,50);
         this._scoreTitle.x = 120;
         this._scoreTitle.y = this.winSize.height - 50;
+        this._scoreTitle.enableOutline(cc.color(0, 0, 0), 2);
         this.addChild(this._scoreTitle,1);
 
         this._infoTitle = new ccui.Text("",res.font,50);
@@ -58,27 +60,35 @@ const GameLayer = cc.Layer.extend({
     },
 
     update:function (dt) {
-        if(this._state !== STATE_PAUSE){
-            this._bird.updateBird(dt);
+        this._bird.updateBird(dt);
+        if(this._state === STATE_PAUSE){
+            this._bird.visible = true;
+            cc.director.getActionManager().pauseTarget(this._bird);
         }
         if (this._state === STATE_PLAYING || this._state === STATE_PREPARING) {
             this._movingBackground(dt);
             this._movingGround(dt);
-            for(let i = 0; i < FlippyBird.CONTAINER.PIPES.length; i++){
-                if(FlippyBird.CONTAINER.PIPES[i].active){
-                    FlippyBird.CONTAINER.PIPES[i].updatePipe(dt);
+            const PIPES = FlippyBird.CONTAINER.PIPES;
+            for(let i = 0; i < PIPES.length; i++){
+                if(PIPES[i].active){
+                    PIPES[i].updatePipe(dt);
                 }
             }
-            for(let i = 0; i < FlippyBird.CONTAINER.BACKGROUND.length; i++){
-                if(FlippyBird.CONTAINER.BACKGROUND[i].active){
-                    FlippyBird.CONTAINER.BACKGROUND[i].updateGround(dt);
+            const BACKGROUNDS = FlippyBird.CONTAINER.BACKGROUND;
+            for(let i = 0; i < BACKGROUNDS.length; i++){
+                if(BACKGROUNDS[i].active){
+                    BACKGROUNDS[i].updateGround(dt);
                 }
             }
         }
         this._scoreTitle.setString("Score: " + GAMESCORE);
-        if(this._state === STATE_GAMEOVER){
+        if(this._state === STATE_GAMEOVER && this._isFirstTime){
+            this._isFirstTime = false;
             stopBackgroundMusic();
             clearInterval(this._pipeCreateId);
+            setTimeout(()=>{
+                cc.director.runScene(new cc.TransitionFade(0.5, OverScene.scene()));
+            },1500);
         }
     },
 
@@ -136,6 +146,12 @@ const GameLayer = cc.Layer.extend({
             } else
                 locBackSkyRe.x = currPosX;
         }
+    },
+
+    playVibrateDisplay: function (){
+        const vibrateAction = cc.moveBy(0.05,cc.p(10,10));
+        const vibrateActionRevert = vibrateAction.reverse();
+        this.runAction(cc.sequence(vibrateAction,vibrateActionRevert,vibrateAction,vibrateActionRevert));
     },
 
     addTouchListener: function () {

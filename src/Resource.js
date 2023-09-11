@@ -16,6 +16,17 @@ var res = {
 }
 
 var g_mainmenu = [
-
+    res.bgImage,
+    res.birdImage,
+    res.groundImage,
+    res.pipeImage,
+    res.font,
+    res.scoreEffect,
+    res.explosionEffect,
+    res.jumpEffect,
+    res.backgroundMusic,
+    res.bronzeCup,
+    res.silverCup,
+    res.goldenCup,
 ];
 

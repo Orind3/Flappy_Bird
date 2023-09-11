@@ -18,14 +18,17 @@ var OverScene = cc.Layer.extend({
         this.lostTitle = new ccui.Text("OOP! YOU LOST!",res.font,50);
         this.lostTitle.x = winSize.width  / 2;
         this.lostTitle.y = 480;
+        this.lostTitle.enableOutline(cc.color(0, 0, 0), 2);
         this.addChild(this.lostTitle, 1);
 
         this.score = new ccui.Text("Score: " + GAMESCORE,res.font,30);
         this.score.x = winSize.width / 2;
         this.score.y = 290;
+        this.score.enableOutline(cc.color(0, 0, 0), 2);
         this.addChild(this.score,1);
 
         this.cup = cc.Sprite(res.bronzeCup);
+
         if(GAMESCORE > 3){
             this.cup = cc.Sprite(res.silverCup);
         }
@@ -62,11 +65,13 @@ var OverScene = cc.Layer.extend({
         this.enterLabel = new ccui.Text("PRESS ENTER TO PLAY AGAIN",res.font,25);
         this.enterLabel.x = winSize.width  / 2;
         this.enterLabel.y = 250;
+        this.enterLabel.enableOutline(cc.color(0, 0, 0), 2);
         this.addChild(this.enterLabel,1);
 
         this.timingLabel = new ccui.Text("",res.font,75);
         this.timingLabel.x = winSize.width  / 2;
         this.timingLabel.y = winSize.height / 2;
+        this.timingLabel.enableOutline(cc.color(0, 0, 0), 2);
         this.addChild(this.timingLabel,1);
 
         this.addKeyboardListener();
@@ -86,22 +91,25 @@ var OverScene = cc.Layer.extend({
                         self.removeChild(self.score);
                         self.removeChild(self.enterLabel);
                         self.removeChild(self.lostTitle);
-                        self.countDownTime = setInterval(()=>{
+                        self.schedule(()=>{
+                            if(self.countDown>0)
+                                self.timingLabel.setString(self.countDown);
+                            const zoomOutAction = cc.scaleBy(0.2 , 2);
+                            const zoomInAction = cc.scaleBy(0.8 , 0.5);
+                            self.timingLabel.runAction(cc.sequence(zoomOutAction,zoomInAction));
                             self.countDown --;
-                            self.timingLabel.setString(self.countDown);
-                        },1000)
+                        },1)
                     }
                 }
             },this);
     },
     update: function (dt){
-        if(this.countDown <= 0){
+        if(this.countDown <= -1){
             clearInterval(this.countDownTime);
             FlippyBird.CONTAINER.BACKSKYS = [];
             FlippyBird.CONTAINER.PIPES = [];
             FlippyBird.CONTAINER.BACKGROUND = [];
             GAMESCORE = 0;
-            checkFirstTime = true;
             cc.director.runScene(GameLayer.scene());
         }
     }
