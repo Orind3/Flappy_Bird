@@ -177,7 +177,6 @@ const Bird = cc.Sprite.extend({
     },
     handlePowerSkill: function (delta){
         this._timer -= delta;
-        console.log(this._timer*10);
         if(Math.floor(this._timer * 10) === 250){
             this.runAction(cc.scaleBy(0.2,0.2));
             this.setWidthAndHeight(2.5);

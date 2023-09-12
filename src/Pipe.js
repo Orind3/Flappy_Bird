@@ -116,7 +116,6 @@ var Pipe = cc.Sprite.extend({
 });
 
 Pipe.create = function (){
-    console.log("Pipe create()" + Math.random());
     let pipe = new Pipe();
     g_sharedGameLayer.addChild(pipe,-5);
     FlippyBird.CONTAINER.PIPES.push(pipe);

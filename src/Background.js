@@ -14,7 +14,6 @@ const BackSky = cc.Sprite.extend({
 });
 
 BackSky.create = function () {
-    console.log("Background create() "+ Math.random());
     const backGround = new BackSky();
     g_sharedGameLayer.addChild(backGround,-10);
     FlippyBird.CONTAINER.BACKSKYS.push(backGround);
